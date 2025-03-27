@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] float speed = 5f;        
+    [SerializeField] float speed = 5f;
     [SerializeField] float rotationSpeed = 200f;
     [SerializeField] float friction = 0.2f;
     [SerializeField] float brakeStrength = 2f;
@@ -13,7 +11,7 @@ public class Movement : MonoBehaviour
     [SerializeField] Rigidbody rb;
 
     private bool accelerating;
-    private bool deccelerating;
+    private bool decelerating;
     private float rotationInput;
 
     void Start()
@@ -37,7 +35,7 @@ public class Movement : MonoBehaviour
 
         accelerating = Input.GetKey(KeyCode.W);
 
-        deccelerating = Input.GetKey(KeyCode.S);
+        decelerating = Input.GetKey(KeyCode.S);
 
         if (Input.GetKey(KeyCode.A))
         {
@@ -53,26 +51,42 @@ public class Movement : MonoBehaviour
     {
         if (accelerating)
         {
-            rb.velocity += speed * transform.right * Time.fixedDeltaTime;
+            if (rb.velocity.magnitude < maxSpeed)
+            {
+                rb.velocity += speed * transform.right * Time.fixedDeltaTime;
+            }
         }
         else
         {
             rb.velocity = new Vector3(
-                rb.velocity.x * (1 / (1 + friction * Time.fixedDeltaTime)), 
-                0, 
-                rb.velocity.z * (1 / (1 + friction * Time.fixedDeltaTime))
+                rb.velocity.x * Mathf.Clamp01(1 - friction * Time.fixedDeltaTime),
+                0,
+                rb.velocity.z * Mathf.Clamp01(1 - friction * Time.fixedDeltaTime)
             );
         }
-        if (deccelerating)
+
+        if (decelerating)
         {
-            // si estoy pulsando S -> dos cosas (el coche va hacia delante = frena, si va para atras lo acelera hacia atras)
+            float forwardVelocity = Vector3.Dot(rb.velocity, transform.right);
+
+            if (forwardVelocity > 0) 
+            {
+                rb.velocity -= brakeStrength * transform.right * Time.fixedDeltaTime;
+
+            }
+            else if (forwardVelocity <= 0) 
+            {
+                if (rb.velocity.magnitude < maxSpeed)
+                {
+                    rb.velocity -= speed * transform.right * Time.fixedDeltaTime;
+                }
+            }
         }
 
-        rb.AddTorque(rotationInput * rotationSpeed * transform.up * Time.fixedDeltaTime);
+        if (rb.angularVelocity.magnitude < maxRotationSpeed)
+        {
+            rb.AddTorque(rotationInput * rotationSpeed * transform.up * Time.fixedDeltaTime);
+        }
     }
 
-    void Brake()
-    {
-        rb.velocity = new Vector3(rb.velocity.x * (1 / (1 + brakeStrength * Time.fixedDeltaTime)), 0, rb.velocity.z * (1 / (1 + brakeStrength * Time.fixedDeltaTime)));
-    }
 }
