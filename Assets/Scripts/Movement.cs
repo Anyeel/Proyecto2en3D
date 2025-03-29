@@ -7,6 +7,7 @@ public class Movement : MonoBehaviour
     [SerializeField] float friction = 0.2f;
     [SerializeField] float brakeStrength = 2f;
     [SerializeField] float maxSpeed = 15f;
+    [SerializeField] float maxBackwardSpeed = -5f;
     [SerializeField] float maxRotationSpeed = 50f;
     [SerializeField] Rigidbody rb;
 
@@ -49,11 +50,13 @@ public class Movement : MonoBehaviour
 
     void MovementPhysics()
     {
+        Vector3 localVelocity = transform.InverseTransformDirection(rb.velocity);
+
         if (accelerating)
         {
-            if (rb.velocity.magnitude < maxSpeed)
+            if (localVelocity.z < maxSpeed)
             {
-                rb.velocity += speed * transform.right * Time.fixedDeltaTime;
+                rb.velocity += speed * transform.forward * Time.fixedDeltaTime;
             }
         }
         else
@@ -67,19 +70,16 @@ public class Movement : MonoBehaviour
 
         if (decelerating)
         {
-            float forwardVelocity = Vector3.Dot(rb.velocity, transform.right);
-
-            if (forwardVelocity > 0) 
+            if (localVelocity.z < 0)
             {
-                rb.velocity -= brakeStrength * transform.right * Time.fixedDeltaTime;
-
-            }
-            else if (forwardVelocity <= 0) 
-            {
-                if (rb.velocity.magnitude < maxSpeed)
+                if (localVelocity.z > maxBackwardSpeed)
                 {
-                    rb.velocity -= speed * transform.right * Time.fixedDeltaTime;
+                    rb.velocity -= speed * transform.forward * Time.fixedDeltaTime;
                 }
+            }
+            else
+            {
+                rb.velocity -= brakeStrength * transform.forward * Time.fixedDeltaTime;
             }
         }
 
@@ -88,5 +88,4 @@ public class Movement : MonoBehaviour
             rb.AddTorque(rotationInput * rotationSpeed * transform.up * Time.fixedDeltaTime);
         }
     }
-
 }
