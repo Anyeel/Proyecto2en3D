@@ -1,19 +1,25 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Movement : MonoBehaviour
 {
     [SerializeField] float speed = 5f;
-    [SerializeField] float rotationSpeed = 200f;
+    [SerializeField] float rotationSpeed = 100f;
     [SerializeField] float friction = 0.2f;
     [SerializeField] float brakeStrength = 2f;
     [SerializeField] float maxSpeed = 15f;
     [SerializeField] float maxBackwardSpeed = -5f;
     [SerializeField] float maxRotationSpeed = 50f;
+    [SerializeField] float maxHandbrakingRotationSpeed = 100f;
+    [SerializeField] float handBrakeStrenght = 10f;
+    [SerializeField] float handBrakeRotationSpeed = 200f;
     [SerializeField] Rigidbody rb;
+    [SerializeField] TrailRenderer handBrakeMarks;
 
     private bool accelerating;
     private bool decelerating;
     private float rotationInput;
+    private bool handBraking;
 
     void Start()
     {
@@ -28,6 +34,7 @@ public class Movement : MonoBehaviour
     private void FixedUpdate()
     {
         MovementPhysics();
+        HandBrake();
     }
 
     void MovementInput()
@@ -37,6 +44,8 @@ public class Movement : MonoBehaviour
         accelerating = Input.GetKey(KeyCode.W);
 
         decelerating = Input.GetKey(KeyCode.S);
+
+        handBraking = Input.GetKey(KeyCode.Space);
 
         if (Input.GetKey(KeyCode.A))
         {
@@ -79,13 +88,24 @@ public class Movement : MonoBehaviour
             }
             else
             {
-                rb.velocity -= brakeStrength * transform.forward * Time.fixedDeltaTime;
+                rb.velocity /= 1 + (brakeStrength * Time.fixedDeltaTime);
             }
         }
 
-        if (rb.angularVelocity.magnitude < maxRotationSpeed)
+        if (rb.angularVelocity.magnitude < (handBraking ? maxRotationSpeed : maxHandbrakingRotationSpeed))
         {
             rb.AddTorque(rotationInput * rotationSpeed * transform.up * Time.fixedDeltaTime);
         }
+    }
+
+    void HandBrake()
+    {
+        if (handBraking)
+        {
+            rb.velocity /= 1 + (handBrakeStrenght * Time.fixedDeltaTime);
+            rb.AddTorque(handBrakeRotationSpeed * rotationInput * transform.up * Time.fixedDeltaTime);
+            handBrakeMarks.emitting = true;
+        }
+        else handBrakeMarks.emitting = false;
     }
 }
