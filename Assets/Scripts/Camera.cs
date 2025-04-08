@@ -32,7 +32,6 @@ public class Camera : MonoBehaviour
             Vector3 cameraTargetVector = target.position - transform.position;
             Vector3 newPosition = minDistanceToTarget / cameraTargetVector.magnitude * cameraTargetVector;
             transform.position = target.position - cameraTargetVector.normalized * minDistanceToTarget;
-
         }
     }
 }
