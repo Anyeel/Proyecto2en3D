@@ -5,8 +5,8 @@ public class Obstacles : MonoBehaviour
 {
     [SerializeField] float maxSpeed = 5f;
     [SerializeField] float minSpeed = 2f;
-    [SerializeField] float maxYOffset = 5f; // Altura máxima relativa
-    [SerializeField] float minYOffset = -5f; // Altura mínima relativa
+    [SerializeField] float maxYOffset = 5f; 
+    [SerializeField] float minYOffset = -5f; 
     [SerializeField] GameObject[] obstacles;
     [SerializeField] AnimationCurve speedCurve;
     [SerializeField] float animationDuration = 2f;
