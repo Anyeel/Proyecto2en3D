@@ -6,7 +6,6 @@ public class Collectible : MonoBehaviour
     [SerializeField] GameObject collectiblePrefab;
     [SerializeField] float animationDuration = 2f;
     [SerializeField] AnimationCurve speedCurve;
-    [SerializeField] float speed = 5f;
     [SerializeField] float yOffset = 0.5f;
     [SerializeField] Vector3 maxHighOffset = new Vector3(0, 3f, 0);
     [SerializeField] GameObject[] spawnPositions;
@@ -31,7 +30,7 @@ public class Collectible : MonoBehaviour
 
             while (elapsedTime < animationDuration)
             {
-                elapsedTime += Time.deltaTime * speed;
+                elapsedTime += Time.deltaTime;
                 float curveValue = speedCurve.Evaluate(elapsedTime / animationDuration);
                 currentCollectible.transform.position = Vector3.Lerp(startHigh, maxHigh, curveValue);
                 yield return null;
@@ -41,7 +40,7 @@ public class Collectible : MonoBehaviour
 
             while (elapsedTime < animationDuration)
             {
-                elapsedTime += Time.deltaTime * speed;
+                elapsedTime += Time.deltaTime;
                 float curveValue = speedCurve.Evaluate(elapsedTime / animationDuration);
                 currentCollectible.transform.position = Vector3.Lerp(maxHigh, startHigh, curveValue);
                 yield return null;

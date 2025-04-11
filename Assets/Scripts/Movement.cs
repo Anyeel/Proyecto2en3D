@@ -108,4 +108,12 @@ public class Movement : MonoBehaviour
         }
         else handBrakeMarks.emitting = false;
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            GameEvents.ObstacleHit.Invoke();
+        }
+    }
 }
