@@ -3196,7 +3196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectiblePrefab: {fileID: 8776032713501217106, guid: 217d90e470bcfd34fb0f8b7d3f9f582f, type: 3}
-  animationDuration: 2
+  animationDuration: 1.5
   speedCurve:
     serializedVersion: 2
     m_Curve:
@@ -3221,8 +3221,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  yOffset: 0.5
-  maxHighOffset: {x: 0, y: 0.6, z: 0}
+  yOffset: 0.45
+  maxHighOffset: {x: 0, y: 0.55, z: 0}
   spawnPositions:
   - {fileID: 882282175}
   - {fileID: 684953957}
@@ -3272,18 +3272,18 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -3291,7 +3291,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   pointsText: {fileID: 1587228807}
-  screenSeconds: 2
+  displayDuration: 2
 --- !u!1 &1737598468 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7939090149675096316, guid: cd1b9489adac288408b340a0be20198d, type: 3}
@@ -4357,16 +4357,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc6d1319bb120104ebdef98820ac6ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
-  rotationSpeed: 500
+  speed: 80
+  rotationSpeed: 400
   friction: 0.2
-  brakeStrength: 2
+  brakeStrength: 3
   maxSpeed: 15
   maxBackwardSpeed: -5
-  maxRotationSpeed: 15
-  maxHandbrakingRotationSpeed: 30
-  handBrakeStrenght: 5
-  handBrakeRotationSpeed: 800
+  maxRotationSpeed: 3
+  maxHandbrakingRotationSpeed: 6
+  handBrakeStrenght: 6
+  handBrakeRotationSpeed: 600
   rb: {fileID: 2110032835}
   handBrakeMarks: {fileID: 1495003946}
 --- !u!1 &2115353379

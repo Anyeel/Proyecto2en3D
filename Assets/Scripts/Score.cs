@@ -1,7 +1,5 @@
-using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
@@ -14,11 +12,6 @@ public class Score : MonoBehaviour
     {
         GameEvents.CollectibleEarned.AddListener(AddPoints);
         GameEvents.ObstacleHit.AddListener(SubtractPoints);
-    }
-
-    void Update()
-    {
-        
     }
 
     void AddPoints()

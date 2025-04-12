@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class Movement : MonoBehaviour
 {
@@ -20,11 +19,6 @@ public class Movement : MonoBehaviour
     private bool decelerating;
     private float rotationInput;
     private bool handBraking;
-
-    void Start()
-    {
-
-    }
 
     void Update()
     {
@@ -92,9 +86,21 @@ public class Movement : MonoBehaviour
             }
         }
 
-        if (rb.angularVelocity.magnitude < (handBraking ? maxRotationSpeed : maxHandbrakingRotationSpeed))
+
+        float currentRotationSpeed = rb.angularVelocity.y;
+        float targetRotationSpeed = handBraking ? maxHandbrakingRotationSpeed : maxRotationSpeed;
+
+        if (Mathf.Abs(currentRotationSpeed) < targetRotationSpeed)
         {
             rb.AddTorque(rotationInput * rotationSpeed * transform.up * Time.fixedDeltaTime);
+        }
+        else
+        {
+            rb.angularVelocity = new Vector3(
+                rb.angularVelocity.x,
+                Mathf.Clamp(rb.angularVelocity.y, -targetRotationSpeed, targetRotationSpeed),
+                rb.angularVelocity.z
+            );
         }
     }
 
